@@ -75,9 +75,10 @@ export async function redirecionarUrl(req, res) {
         if (newUrlAtiva.rows[0]) {
             return res.sendStatus(404);
         };
+        
         await connectionDB.query(`UPDATE urls SET visit = visit + 1 WHERE "newUrl"=$1;`, [newUrl])
 
-        res.redirect(newUrlAtiva.rows[0]);
+        res.redirect(newUrlAtiva[0]);
 
     } catch (err) {
         console.log(err);

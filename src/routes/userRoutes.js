@@ -3,6 +3,6 @@ import { perfil } from "../controllers/userController.js"
 
 const router = Router()
 
-router.post("/users/me", perfil)
+router.get("/users/me", perfil)
 
 export default router
