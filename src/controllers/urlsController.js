@@ -71,12 +71,13 @@ export async function redirecionarUrl(req, res) {
     const { newUrl } = req.params;
 
     try {
-        const { rows } = await connectionDB.query(`SELECT * FROM urls WHERE "newUrl"=$1;`, [newUrl]);
-        if (rows.length === 0) {
+        const newUrlAtiva = await connectionDB.query(`SELECT * FROM urls WHERE "newUrl"=$1;`, [newUrl]);
+        if (newUrlAtiva.rows[0]) {
             return res.sendStatus(404);
         };
-        await connectionDB.query('UPDATE urls SET visit = visit + 1 WHERE "newUrl"=$1;', [newUrl])
-        res.redirect(rows[0].url);
+        await connectionDB.query(`UPDATE urls SET visit = visit + 1 WHERE "newUrl"=$1;`, [newUrl])
+
+        res.redirect(newUrlAtiva.rows[0]);
 
     } catch (err) {
         console.log(err);
@@ -96,7 +97,7 @@ export async function deletarUrl(req, res) {
             return res.sendStatus(401);
         }
 
-        const urlAtiva = await connectionDB.query('SELECT * FROM urls WHERE id=$1;', [id])
+        const urlAtiva = await connectionDB.query(`SELECT * FROM urls WHERE id=$1;`, [id])
         
         if(!urlAtiva.rows[0]){
             return res.sendStatus(404)
