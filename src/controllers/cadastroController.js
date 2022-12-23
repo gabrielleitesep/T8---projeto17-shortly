@@ -1,6 +1,6 @@
 import joi from "joi"
 import bcrypt from "bcrypt";
-import { connectionDB } from "../db/db";
+import {connectionDB} from "../db/db.js";
 
 const cadastroJOI = joi.object({
     name: joi.string().required().min(1),
@@ -28,7 +28,7 @@ export async function cadastro(req, res) {
     }
 
     try {
-        await connectionDB.query("INSERT INTO usuarios (name, email, password) VALUES ($1, $2, $3);", [name, email, hashPassword])
+        await connectionDB.query(`INSERT INTO usuarios ("email", "password", "name") VALUES ($1, $2, $3);`, [email, hashPassword, name])
         res.sendStatus(201);
 
     } catch (err) {

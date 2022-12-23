@@ -1,7 +1,7 @@
 import express from "express";
-import loginRoutes from "./src/routes/loginRoutes.js"
-import cadastroRoutes from "./src/routes/cadastroRoutes.js"
-import urlsRoutes from "./src/routes/urlsRoutes.js"
+import loginRoutes from "./routes/loginRoutes.js"
+import cadastroRoutes from "./routes/cadastroRoutes.js"
+import urlsRoutes from "./routes/urlsRoutes.js"
 import dotenv from "dotenv";
 dotenv.config();
 

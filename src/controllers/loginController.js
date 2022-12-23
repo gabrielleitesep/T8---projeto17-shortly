@@ -1,5 +1,5 @@
 import joi from "joi";
-import { connectionDB } from "../db/db";
+import {connectionDB} from "../db/db.js";
 import { v4 as uuidV4 } from "uuid";
 import bcrypt from "bcrypt";
 
@@ -25,7 +25,7 @@ export async function login(req, res) {
     }
 
     try {
-        const ativo = await connectionDB.query('SELECT * FROM usuarios WHERE email=$1;', [email])
+        const ativo = await connectionDB.query(`SELECT * FROM usuarios WHERE email=$1;`, [email])
         if (!ativo.rows[0]) {
             return res.sendStatus(401);
         }
@@ -37,9 +37,10 @@ export async function login(req, res) {
 
         const userId = ativo.rows[0].id.toString();
 
-        await connectionDB.query('INSERT INTO atividade ("userId", token) VALUES ($1, $2);', [userId, token])
+        await connectionDB.query(`INSERT INTO atividade ("token", "userId") VALUES ($1, $2);`, [token, userId])
 
         res.send({ token });
+        
     } catch (err) {
         console.log(err)
         res.sendStatus(500);
